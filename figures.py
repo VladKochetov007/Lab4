@@ -129,47 +129,35 @@ class Car:
     """Car class composed of figures"""
     
     def __init__(self, x: float, y: float):
-        # Body (rectangle)
-        self._body = Rectangle(x, y, 200, 60, "blue")
-        # Wheels (circles)
-        self._wheel1 = Circle(x + 40, y - 30, 20, "black")
-        self._wheel2 = Circle(x + 160, y - 30, 20, "black")
-        # Windows (rectangles)
-        self._window1 = Rectangle(x + 120, y + 20, 40, 30, "lightblue")
-        self._window2 = Rectangle(x + 40, y + 20, 40, 30, "lightblue")
-        # Headlights (circles)
-        self._headlight1 = Circle(x + 180, y + 30, 10, "yellow")
-        self._headlight2 = Circle(x + 20, y + 30, 10, "yellow")
+        # Create all car parts
+        self._parts = [
+            # Body (rectangle)
+            Rectangle(x, y, 200, 60, "blue"),
+            # Wheels (circles)
+            Circle(x + 40, y - 30, 20, "black"),
+            Circle(x + 160, y - 30, 20, "black"),
+            # Windows (rectangles)
+            Rectangle(x + 120, y + 20, 40, 30, "lightblue"),
+            Rectangle(x + 40, y + 20, 40, 30, "lightblue"),
+            # Headlights (circles)
+            Circle(x + 180, y + 30, 10, "yellow"),
+            Circle(x + 20, y + 30, 10, "yellow")
+        ]
 
     def show(self) -> None:
         """Show all car parts"""
-        self._body.show()
-        self._wheel1.show()
-        self._wheel2.show()
-        self._window1.show()
-        self._window2.show()
-        self._headlight1.show()
-        self._headlight2.show()
+        for part in self._parts:
+            part.show()
 
     def hide(self) -> None:
         """Hide all car parts"""
-        self._body.hide()
-        self._wheel1.hide()
-        self._wheel2.hide()
-        self._window1.hide()
-        self._window2.hide()
-        self._headlight1.hide()
-        self._headlight2.hide()
+        for part in self._parts:
+            part.hide()
 
     def move(self, dx: float, dy: float) -> None:
         """Move car by dx, dy pixels"""
-        self._body.move(dx, dy)
-        self._wheel1.move(dx, dy)
-        self._wheel2.move(dx, dy)
-        self._window1.move(dx, dy)
-        self._window2.move(dx, dy)
-        self._headlight1.move(dx, dy)
-        self._headlight2.move(dx, dy)
+        for part in self._parts:
+            part.move(dx, dy)
 
 def draw_random_figures(count: int = 100) -> None:
     """Draw random figures on screen"""
@@ -212,31 +200,21 @@ def main() -> None:
     home()
     delay(30)
     
-    # Test individual figures
-    c = Circle(120, 120, 50, "blue")
-    c.show()
-    c.move(-30, -140)
-    c.hide()
+    # Test figures with their parameters
+    test_figures = [
+        (Circle, (120, 120, 50, "blue")),
+        (Square, (0, 0, 150, "red")),
+        (Triangle, (120, 120, 50, "blue")),
+        (Trapezoid, (120, 120, 50, 30, 40, "red")),
+        (Rectangle, (120, 120, 50, 30, "red"))
+    ]
     
-    q = Square(0, 0, 150, "red")
-    q.show()
-    q.move(0, 140)
-    q.hide()
-    
-    t = Triangle(120, 120, 50, "blue")
-    t.show()
-    t.move(-30, -140)
-    t.hide()
-    
-    tr = Trapezoid(120, 120, 50, 30, 40, "red")
-    tr.show()
-    tr.move(-30, -140)
-    tr.hide()
-    
-    r = Rectangle(120, 120, 50, 30, "red")
-    r.show()
-    r.move(-30, -140)
-    r.hide()
+    # Test each figure
+    for figure_class, params in test_figures:
+        figure = figure_class(*params)
+        figure.show()
+        figure.move(-30, -140)
+        figure.hide()
     
     # Test car
     car = Car(0, 0)
