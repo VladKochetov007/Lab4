@@ -1,5 +1,6 @@
 from turtle import *
 from random import randint
+from time import sleep
 
 class Figure:
     """Base class for geometric figures"""
@@ -163,20 +164,23 @@ class Car:
             part.move(dx, dy)
 
     def animate_drawing(self) -> None:
-        """Animate car drawing part by part"""
+        """Make car appear instantly by drawing all parts in one frame"""
+        # Disable screen updates
+        tracer(0, 0)
+        
         for part in self._parts:
             part.show()
-            delay(100)  # Delay between each part drawing
+            update()
+        
+        # Enable screen updates
+        tracer(1)
 
     def animate_movement(self, steps: int = 10, dx: float = 10, dy: float = 0) -> None:
-        """Animate car movement with smooth transitions"""
-        # Save current tracer state
-        current_tracer = tracer()
+        """Animate car movement with smooth transitions using turtle tracer"""
+        # Disable screen updates
+        tracer(0, 0)
         
         for _ in range(steps):
-            # Disable screen updates
-            tracer(0, 0)
-            
             # Move car (this includes hide and show)
             self.move(dx, dy)
             
@@ -184,10 +188,11 @@ class Car:
             update()
             
             # Add delay for animation effect
-            delay(50)
+            delay(5)
+            sleep(0.4)
         
-        # Restore original tracer state
-        tracer(current_tracer)
+        # Enable screen updates
+        tracer(1)
 
 def draw_random_figures(count: int = 100) -> None:
     """Draw random figures on screen"""
@@ -228,23 +233,23 @@ def draw_random_figures(count: int = 100) -> None:
 def main() -> None:
     # Initialize turtle
     home()
-    delay(30)
+    delay(3)
     
     # Test figures with their parameters
-    test_figures = [
-        (Circle, (120, 120, 50, "blue")),
-        (Square, (0, 0, 150, "red")),
-        (Triangle, (120, 120, 50, "blue")),
-        (Trapezoid, (120, 120, 50, 30, 40, "red")),
-        (Rectangle, (120, 120, 50, 30, "red"))
-    ]
+    # test_figures = [
+    #     (Circle, (120, 120, 50, "blue")),
+    #     (Square, (0, 0, 150, "red")),
+    #     (Triangle, (120, 120, 50, "blue")),
+    #     (Trapezoid, (120, 120, 50, 30, 40, "red")),
+    #     (Rectangle, (120, 120, 50, 30, "red"))
+    # ]
     
-    # Test each figure
-    for figure_class, params in test_figures:
-        figure = figure_class(*params)
-        figure.show()
-        figure.move(-30, -140)
-        figure.hide()
+    # # Test each figure
+    # for figure_class, params in test_figures:
+    #     figure = figure_class(*params)
+    #     figure.show()
+    #     figure.move(-30, -140)
+    #     figure.hide()
     
     # Test car with animation
     car = Car(-200, 0)  # Start more to the left to see full movement
@@ -252,7 +257,7 @@ def main() -> None:
     # First, animate drawing the car
     print("Drawing car...")
     car.animate_drawing()
-    delay(500)  # Pause after drawing
+    delay(50)  # Pause after drawing
     
     # Then, animate car movement with smooth transitions
     print("Moving car...")
