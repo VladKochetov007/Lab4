@@ -143,6 +143,8 @@ class Car:
             Circle(x + 180, y + 30, 10, "yellow"),
             Circle(x + 20, y + 30, 10, "yellow")
         ]
+        self._x = x
+        self._y = y
 
     def show(self) -> None:
         """Show all car parts"""
@@ -156,8 +158,37 @@ class Car:
 
     def move(self, dx: float, dy: float) -> None:
         """Move car by dx, dy pixels"""
+        self._x += dx
+        self._y += dy
         for part in self._parts:
             part.move(dx, dy)
+
+    def animate_drawing(self) -> None:
+        """Animate car drawing part by part"""
+        for part in self._parts:
+            part.show()
+            delay(100)  # Delay between each part drawing
+
+    def animate_movement(self, steps: int = 10, dx: float = 10, dy: float = 0) -> None:
+        """Animate car movement with smooth transitions"""
+        # Save current tracer state
+        current_tracer = tracer()
+        
+        for _ in range(steps):
+            # Disable screen updates
+            tracer(0, 0)
+            
+            # Move car (this includes hide and show)
+            self.move(dx, dy)
+            
+            # Force screen update
+            update()
+            
+            # Add delay for animation effect
+            delay(50)
+        
+        # Restore original tracer state
+        tracer(current_tracer)
 
 def draw_random_figures(count: int = 100) -> None:
     """Draw random figures on screen"""
@@ -216,13 +247,20 @@ def main() -> None:
         figure.move(-30, -140)
         figure.hide()
     
-    # Test car
-    car = Car(0, 0)
-    car.show()
-    car.move(100, 100)
+    # Test car with animation
+    car = Car(-200, 0)  # Start more to the left to see full movement
+    
+    # First, animate drawing the car
+    print("Drawing car...")
+    car.animate_drawing()
+    delay(500)  # Pause after drawing
+    
+    # Then, animate car movement with smooth transitions
+    print("Moving car...")
+    car.animate_movement(steps=40, dx=10, dy=0)  # Move horizontally
     
     # Draw random figures
-    draw_random_figures()
+    # draw_random_figures()
     
     mainloop()
 
