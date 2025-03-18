@@ -1,6 +1,5 @@
 from turtle import *
 from random import randint
-from typing import Tuple
 
 class Figure:
     """Base class for geometric figures"""
